@@ -1,5 +1,10 @@
 # pro-samlpe
-Bài tập lớn môn Các hệ cơ sở dữ liệu
+Bài tập lớn môn Các hệ cơ sở dữ liệu.
+
+_Nhóm Kẹt quá kẹt_
+
+![Project Logo](ghlink.png)
+
 
 ## Install
 1. Create prometheus.yml file
@@ -26,3 +31,14 @@ Tùy chọn này mount (gắn kết) một tệp hoặc thư mục từ máy ch�
 #### prom/prometheus:
 
 Đây là tên của image Docker mà bạn muốn chạy. prom/prometheus là image chính thức của Prometheus trên Docker Hub.
+
+3. Cài đặt các dependencies của project
+
+`npm install`
+
+4. Chạy project
+
+`npm run dev`
+
+
+![Project Logo](prowebui.png)
