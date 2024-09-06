@@ -5,10 +5,12 @@ const axios = require('axios');
 
 const app = express();
 
-
+/**
+ * Reads the Prometheus configuration from a file and posts it to the Prometheus API.
+ * This is a way to reload the configuration without restarting the server.
+ */
 const config = fs.readFileSync('prometheus.yml', 'utf8');
 
-// Prometheus API
 axios.post('http://localhost:9090/-/reload', {
   yaml: config
 })
@@ -19,15 +21,18 @@ axios.post('http://localhost:9090/-/reload', {
     console.error('Lỗi khi cập nhật cấu hình Prometheus:', error);
   });
 
-
-// Create counter
+/**
+ * Creates a counter for HTTP requests.
+ */
 const httpRequestCounter = new client.Counter({
   name: 'http_requests_total',
   help: 'Total number of HTTP requests',
   labelNames: ['method', 'route', 'code'],
 });
 
-// Create metric
+/**
+ * Creates a histogram for HTTP request durations.
+ */
 const httpRequestDuration = new client.Histogram({
   name: 'http_request_duration_seconds',
   help: 'Duration of HTTP requests in seconds',
@@ -35,7 +40,9 @@ const httpRequestDuration = new client.Histogram({
   buckets: [0.1, 0.3, 0.5, 0.7, 1, 1.5, 2],
 });
 
-// Middleware collect dât
+/**
+ * Middleware to collect data for the HTTP requests.
+ */
 app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
@@ -46,7 +53,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Sample route for metric
+/**
+ * Sample route for the metrics.
+ */
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', client.register.contentType);
   res.end(await client.register.metrics());
@@ -60,3 +69,4 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
